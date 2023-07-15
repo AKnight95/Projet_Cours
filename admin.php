@@ -1,5 +1,4 @@
 <?php
-
 include('base.php');
 
 session_start();
@@ -15,6 +14,8 @@ if (!isset($_SESSION['email'])) {
 
 $email = $_SESSION['email'];
 ?>
+<!-- Le reste du code... -->
+
 <!-- Modal toggle -->
 <section class="bg-white dark:bg-gray-900 h-full">
   <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">

@@ -1,18 +1,22 @@
 <?php
-    $isLoggedIn = isset($_COOKIE['EMAIL']);
+$isLoggedIn = isset($_COOKIE['EMAIL']);
+$email = '';
 
-    // Ajoutez cette vérification pour rediriger vers login.php si l'utilisateur n'est pas connecté
-    if (!$isLoggedIn) {
-        if (isset($_SESSION['user']['email'])) {
-            $email = $_SESSION['user']['email'];
-            setcookie('EMAIL', $email, time() + 3600); // Définit un cookie pendant une heure
-        } else {
-            header('Location: login.php');
-            exit();
-        }
+// Ajoutez cette vérification pour rediriger vers login.php si l'utilisateur n'est pas connecté
+if (!$isLoggedIn) {
+    if (isset($_SESSION['user']['email'])) {
+        $email = $_SESSION['user']['email'];
+        setcookie('EMAIL', $email, time() + 3600); // Définit un cookie pendant une heure
+    } else {
+        header('Location: login.php');
+        exit();
     }
-    
+} else {
+    $email = $_COOKIE['EMAIL'];
+}
 ?>
+<!-- Le reste du code... -->
+
 
 
 
@@ -31,16 +35,22 @@
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="https://flowbite.com/" class="flex items-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
+        
         <img src="./asset/php_PNG10.png" class="h-8 mr-3" alt="PHP Logo" />
         <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Php</span>
     </a>
     <div class="flex md:order-2">
-        <a href="<?php echo $isLoggedIn ? 'logout.php' : 'login.php'; ?>">
+    <div class="flex items-center">
+    <?php if ($isLoggedIn) : ?>
+        <div class="mr-3 text-white"><?php echo $email; ?></div>
+    <?php endif; ?>
+
+    <a href="<?php echo $isLoggedIn ? 'logout.php' : 'login.php'; ?>">
         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <?php echo $isLoggedIn ? 'Déconnexion' : 'Connexion'; ?>
         </button>
-        </a>
+    </a>
+</div>
         
         <button data-collapse-toggle="navbar-cta" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
@@ -58,6 +68,13 @@
         <li>
             <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Cours JavaScript</a>
         </li>
+        <?php if ($isLoggedIn) : ?>
+            <li>
+                <a href="admin.php" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                    Admin
+                </a>
+            </li>
+        <?php endif; ?>
         <li>
             <a href="contact.php" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
         </li>

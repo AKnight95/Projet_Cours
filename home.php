@@ -1,6 +1,4 @@
 <?php
-include('base.php');
-
 session_start();
 
 if (!isset($_SESSION['user']) && isset($_COOKIE['EMAIL'])) {
@@ -15,13 +13,11 @@ if (!isset($_SESSION['user']['email'])) {
 }
 
 $email = $_SESSION['user']['email'];
+
+include 'base.php';
+
 ?>
 
-<!-- 
-Install the "flowbite-typography" NPM package to apply styles and format the article content: 
-
-URL: https://flowbite.com/docs/components/typography/ 
--->
 
 <section class="bg-white dark:bg-gray-900">
   <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
