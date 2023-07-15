@@ -1,23 +1,17 @@
 <?php
 session_start();
 
+include('base.php');
+
 if (!isset($_SESSION['user']) && isset($_COOKIE['EMAIL'])) {
     $_SESSION['user'] = [
         'email' => $_COOKIE['EMAIL']
     ];
 }
 
-if (!isset($_SESSION['user']['email'])) {
-    header('Location: login.php');
-    exit();
-}
-
-$email = $_SESSION['user']['email'];
-
-include 'base.php';
+$email = isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : '';
 
 ?>
-
 
 <section class="bg-white dark:bg-gray-900">
   <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">

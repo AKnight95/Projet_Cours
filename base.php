@@ -1,23 +1,25 @@
 <?php
-$isLoggedIn = isset($_COOKIE['EMAIL']);
+$isLoggedIn = false;
 $email = '';
 
-// Ajoutez cette vérification pour rediriger vers login.php si l'utilisateur n'est pas connecté
-if (!$isLoggedIn) {
-    if (isset($_SESSION['user']['email'])) {
+// Vérifiez si la session est déjà active
+if (session_status() === PHP_SESSION_ACTIVE) {
+    // Vérifiez si l'utilisateur est connecté
+    if (isset($_SESSION['user']) && isset($_SESSION['user']['email'])) {
+        $isLoggedIn = true;
         $email = $_SESSION['user']['email'];
-        setcookie('EMAIL', $email, time() + 3600); // Définit un cookie pendant une heure
-    } else {
-        header('Location: login.php');
-        exit();
     }
 } else {
-    $email = $_COOKIE['EMAIL'];
+    // Démarrez la session
+    session_start();
+
+    // Vérifiez si l'utilisateur est connecté et mettez à jour les variables en conséquence
+    if (isset($_SESSION['user']) && isset($_SESSION['user']['email'])) {
+        $isLoggedIn = true;
+        $email = $_SESSION['user']['email'];
+    }
 }
 ?>
-<!-- Le reste du code... -->
-
-
 
 
 <!DOCTYPE html>
@@ -63,11 +65,19 @@ if (!$isLoggedIn) {
             <a href="home.php" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Accueil</a>
         </li>
         <li>
-            <a href="admin.php" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Cours PHP</a>
+            <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Cours <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+  </svg></button>
+            <!-- Dropdown menu -->
+            <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                  <li>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                  </li>
+                </ul>
+            </div>
         </li>
         <li>
-            <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Cours JavaScript</a>
-        </li>
         <?php if ($isLoggedIn) : ?>
             <li>
                 <a href="admin.php" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">

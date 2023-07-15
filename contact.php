@@ -1,19 +1,16 @@
 <?php
+session_start();
 
 include('base.php');
 
-session_start();
-
-if (!isset($_SESSION['email']) && isset($_COOKIE['EMAIL'])) {
-    $_SESSION['email'] = $_COOKIE['EMAIL']; 
+if (!isset($_SESSION['user']) && isset($_COOKIE['EMAIL'])) {
+    $_SESSION['user'] = [
+        'email' => $_COOKIE['EMAIL']
+    ];
 }
 
-if (!isset($_SESSION['email'])) {
-    header('Location: login.php'); 
-    exit();
-}
+$email = isset($_SESSION['user']['email']) ? $_SESSION['user']['email'] : '';
 
-$email = $_SESSION['email'];
 ?>
 
 <section class="bg-white dark:bg-gray-900">
